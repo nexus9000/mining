@@ -31,6 +31,7 @@ public class BlockPersistent {
 	   
 	   @Column(name="previous_hash")
 	   private String previousHash;
-	   
+	   @Column(name="is_block_genesis")
+	   private boolean isBlockGenesis;
 	   //public List<Transaction> transactions;
 }
