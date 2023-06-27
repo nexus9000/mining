@@ -1,5 +1,9 @@
 package edu.itstep.blockchain;
 
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -26,14 +30,19 @@ public class MiningApplication {
 	@Bean
 	public CommandLineRunner run(BlockPersistentRepo repo) {
 		return (String[] arg) -> {
-			List<BlockPersistent> blocks = repo.findAll();
-			if(blocks.size() == 0) {
-			 Block genesis = new Block(Constants.GENESIS_PREV_HASH);
-			 Miner miner = new Miner();
-			 Blockchain chain = new Blockchain();
-			 genesis.addTransaction(genesisTransaction);
-			 miner.mine(genesis, chain);
-			}
+//			List<BlockPersistent> blocks = repo.findAll();
+//			if(blocks.size() == 0) {
+//			 Block genesis = new Block(Constants.GENESIS_PREV_HASH);
+//			 Miner miner = new Miner();
+//			 Blockchain chain = new Blockchain();
+//			 HttpClient client = HttpClient.newHttpClient();
+//			 HttpRequest request = HttpRequest.newBuilder()
+//					 .uri(
+//							 URI.create("http://localhost:8082/blockchain/v1/poolTransactions")
+//							 ).build();
+//			 genesis.addTransaction(genesisTransaction);
+//			 miner.mine(genesis, chain);
+//			}
 		};
 	}
 }

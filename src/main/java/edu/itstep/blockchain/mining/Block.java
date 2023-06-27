@@ -12,6 +12,8 @@ public class Block {
    private long timeStamp;
    private String hash;
    private String previousHash;
+  
+   
    // Ethereum every block stores 1500-2000 transactions
    public List<Transaction> transactions;
    

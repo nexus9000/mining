@@ -1,7 +1,5 @@
 package edu.itstep.blockchain.configurations;
 
-import java.net.http.HttpResponse;
-
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
