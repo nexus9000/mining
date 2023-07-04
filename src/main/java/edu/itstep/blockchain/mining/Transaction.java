@@ -1,34 +1,52 @@
 package edu.itstep.blockchain.mining;
 
+
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
+
+@Data
+
+
 public final class Transaction {
+  @JsonIgnore	
+  private Long id;	
 	//id of the transaction
    private String transactionId;
+   
    private PublicKey  sender;
+  
    private PublicKey receiver;
    private double amount;
    //transaction must be signed
    private byte[] signature;
    public List<TransactionInput> inputs;
    public List<TransactionOutput> outputs;
-   
+
    public Transaction(PublicKey sender, PublicKey receiver, 
-		   double amount, List<TransactionInput> inputs) {
+		     double amount) {
 	   this.inputs = new ArrayList<>();
 	   this.outputs = new ArrayList<>();
 	   this.sender = sender;
 	   this.receiver = receiver;
-	   this.inputs = inputs;
+	   //this.inputs = inputs;
 	   this.amount = amount;
 	   calculateHash();
    }
+
    
-   public void generateSignature(PrivateKey privateKey) {
+
+public void generateSignature(PrivateKey privateKey) {
 	   String data = sender.toString() +
 			   receiver.toString() + Double.toString(amount);
 	   signature = CryptographyHelper.sign(privateKey, data);
