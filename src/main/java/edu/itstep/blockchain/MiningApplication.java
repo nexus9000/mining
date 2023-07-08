@@ -1,17 +1,15 @@
 package edu.itstep.blockchain;
 
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
+
+
 import java.security.KeyFactory;
-import java.security.KeyPairGenerator;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.List;
 
-
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -57,21 +55,21 @@ public class MiningApplication {
 			
 			 String result = restTemplate.getForObject(uri, String.class);
 			 JsonNode node = mapper.readTree(result);
-			 
+			 Security.addProvider(new BouncyCastleProvider());
 			 String sender =  node.get("sender").asText();
 			 String receiver =  node.get("receiver").asText();
 			 Double amount = node.get("amount").asDouble();
 			 byte[] publicBytes = Base64.decode(sender);
 			 X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
 			 
-     		 KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+     		 KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
      		 PublicKey pubKey = keyFactory.generatePublic(keySpec);
      		 byte[] publicBytesReceiver = Base64.decode(receiver);
   		     X509EncodedKeySpec keySpecR = new X509EncodedKeySpec(publicBytesReceiver);
-			 KeyFactory keyFactoryR = KeyFactory.getInstance("RSA");
+			 KeyFactory keyFactoryR = KeyFactory.getInstance("ECDSA","BC");
 			 PublicKey pubKeyReceiver = keyFactoryR.generatePublic(keySpecR);
 			// Transaction genesisTransaction = mapper.readValue(result,Transaction.class);
-			 Transaction genesisTransaction = new Transaction(pubKey,pubKeyReceiver, amount);
+			 Transaction genesisTransaction = new Transaction(pubKey, pubKeyReceiver, amount);
 			 genesis.addTransaction(genesisTransaction);
 			 miner.mine(genesis, chain);
 			}
