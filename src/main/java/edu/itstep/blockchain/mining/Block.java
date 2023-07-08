@@ -3,19 +3,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
 
 
+@Getter
 public class Block {
 
-   private int id;
-   private int nonce;
-   private long timeStamp;
-   private String hash;
+   private  int id;
+   private  int nonce;
+   private  long timeStamp;
+   private  String hash;
    private String previousHash;
   
    
    // Ethereum every block stores 1500-2000 transactions
-   public List<Transaction> transactions;
+   public  List<Transaction> transactions;
    
    public Block(String previousHash ) {
       this.transactions = new ArrayList<>();
@@ -24,10 +26,10 @@ public class Block {
       generateHash(); 
    }
    
-   public void generateHash() {
+   public  void generateHash() {
       String dataToHash = Integer.toString(id)+previousHash+Long.toString(timeStamp)+
             transactions.toString()+Integer.toString(nonce);
-      this.hash = CryptographyHelper.generateHash(dataToHash);
+      hash = CryptographyHelper.generateHash(dataToHash);
    }
    
    // check if the given transaction is valid or not

@@ -29,10 +29,12 @@ import edu.itstep.blockchain.mining.Constants;
 import edu.itstep.blockchain.mining.Miner;
 import edu.itstep.blockchain.mining.Transaction;
 import edu.itstep.blockchain.repository.BlockPersistentRepo;
+import lombok.extern.slf4j.Slf4j;
 
 
 
 @SpringBootApplication
+@Slf4j
 public class MiningApplication {
 	@Autowired
 	RestTemplate restTemplate;
@@ -63,15 +65,18 @@ public class MiningApplication {
 			 X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
 			 
      		 KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
-     		 PublicKey pubKey = keyFactory.generatePublic(keySpec);
+     		 PublicKey pubKeySender = keyFactory.generatePublic(keySpec);
      		 byte[] publicBytesReceiver = Base64.decode(receiver);
   		     X509EncodedKeySpec keySpecR = new X509EncodedKeySpec(publicBytesReceiver);
 			 KeyFactory keyFactoryR = KeyFactory.getInstance("ECDSA","BC");
 			 PublicKey pubKeyReceiver = keyFactoryR.generatePublic(keySpecR);
 			// Transaction genesisTransaction = mapper.readValue(result,Transaction.class);
-			 Transaction genesisTransaction = new Transaction(pubKey, pubKeyReceiver, amount);
+			 Transaction genesisTransaction = new Transaction(pubKeySender, pubKeyReceiver, amount);
 			 genesis.addTransaction(genesisTransaction);
 			 miner.mine(genesis, chain);
+			 BlockPersistent bpGenesis = new BlockPersistent(genesis);
+			 repo.save(bpGenesis);
+			 log.info("genesis block was generated");
 			}
 		};
 	}

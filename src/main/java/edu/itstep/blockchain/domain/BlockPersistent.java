@@ -1,7 +1,10 @@
 package edu.itstep.blockchain.domain;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import edu.itstep.blockchain.mining.Block;
 import edu.itstep.blockchain.mining.Transaction;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,4 +37,12 @@ public class BlockPersistent {
 	   @Column(name="is_block_genesis")
 	   private boolean isBlockGenesis;
 	   //public List<Transaction> transactions;
+	   public BlockPersistent(Block block ) {
+		      //this.transactions = new ArrayList<>();
+		      this.previousHash = block.getPreviousHash();
+		      this.hash = block.getHash();
+		      this.nonce = block.getNonce();
+		      this.timeStamp = block.getTimeStamp();
+		      this.isBlockGenesis = true; 
+		   }
 }
